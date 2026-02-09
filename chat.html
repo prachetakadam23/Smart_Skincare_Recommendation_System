@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat - Aurelia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="logo">Aurelia</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="chat.html">Chat with Aurelia</a>
+    </nav>
+
+    <div class="navRight">
+      <a href="login.html" class="navLink">Sign In</a>
+      <a href="start.html" class="btn">Get Started</a>
+    </div>
+  </header>
+
+  <section class="page">
+    <h2 class="title">Chat with Aurelia 💬</h2>
+    <p class="subtitle">Get instant skincare advice powered by AI.</p>
+
+    <div class="chat-box" id="chatBox">
+      <p><b>Aurelia:</b> Hi! I’m Aurelia 💗 Ask me anything about skincare products or routines.</p>
+    </div>
+
+    <div class="quickBtns">
+      <button onclick="quickAsk('What is the best vitamin C serum?')">Vitamin C</button>
+      <button onclick="quickAsk('How do I reduce acne?')">Reduce Acne</button>
+      <button onclick="quickAsk('Explain retinol benefits')">Retinol</button>
+      <button onclick="quickAsk('Budget friendly moisturizers?')">Budget Moisturizers</button>
+    </div>
+
+    <div class="chat-input">
+      <input id="msg" placeholder="Ask Aurelia anything..." />
+      <button onclick="sendMsg()">➤</button>
+    </div>
+  </section>
+
+  <footer class="footerSimple">
+    © 2026 Aurelia AI Skincare | Made with 💗
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

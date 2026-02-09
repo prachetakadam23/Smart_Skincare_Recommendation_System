@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products - Aurelia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="logo">Aurelia</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="chat.html">Chat with Aurelia</a>
+    </nav>
+
+    <div class="navRight">
+      <a href="login.html" class="navLink">Sign In</a>
+      <a href="start.html" class="btn">Get Started</a>
+    </div>
+  </header>
+
+  <section class="page">
+    <h2 class="title">Skincare Products 🧴</h2>
+    <p class="subtitle">Explore trending skincare essentials recommended by Aurelia.</p>
+
+    <div class="productTop">
+      <input
+        type="text"
+        id="searchProduct"
+        class="searchBar"
+        placeholder="Search products... (example: serum, sunscreen)"
+        onkeyup="searchProducts()"
+      />
+
+      <div class="filterBtns">
+        <button onclick="filterProducts('all', this)" class="filterBtn activeFilter">All</button>
+        <button onclick="filterProducts('cleanser', this)" class="filterBtn">Cleanser</button>
+        <button onclick="filterProducts('serum', this)" class="filterBtn">Serum</button>
+        <button onclick="filterProducts('moisturizer', this)" class="filterBtn">Moisturizer</button>
+        <button onclick="filterProducts('sunscreen', this)" class="filterBtn">Sunscreen</button>
+      </div>
+    </div>
+
+    <div class="productGrid" id="productGrid">
+
+      <div class="productCard" data-category="serum">
+        <div class="productHeader">
+          <h3>Vitamin C Serum</h3>
+          <span class="price">₹499</span>
+        </div>
+        <p>Brightens skin & reduces dark spots.</p>
+        <div class="tagsRow">
+          <span class="tag">Glow</span>
+          <span class="tag">Serum</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Vitamin C Serum')">Add to Routine</button>
+      </div>
+
+      <div class="productCard" data-category="moisturizer">
+        <div class="productHeader">
+          <h3>Hydrating Moisturizer</h3>
+          <span class="price">₹399</span>
+        </div>
+        <p>Deep hydration for dry & sensitive skin.</p>
+        <div class="tagsRow">
+          <span class="tag">Hydration</span>
+          <span class="tag">Moisturizer</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Hydrating Moisturizer')">Add to Routine</button>
+      </div>
+
+      <div class="productCard" data-category="cleanser">
+        <div class="productHeader">
+          <h3>Gentle Cleanser</h3>
+          <span class="price">₹299</span>
+        </div>
+        <p>Removes dirt without stripping skin.</p>
+        <div class="tagsRow">
+          <span class="tag">Daily</span>
+          <span class="tag">Cleanser</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Gentle Cleanser')">Add to Routine</button>
+      </div>
+
+      <div class="productCard" data-category="sunscreen">
+        <div class="productHeader">
+          <h3>Sunscreen SPF 50</h3>
+          <span class="price">₹599</span>
+        </div>
+        <p>Protects against UV damage & tanning.</p>
+        <div class="tagsRow">
+          <span class="tag">Protection</span>
+          <span class="tag">Sunscreen</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Sunscreen SPF 50')">Add to Routine</button>
+      </div>
+
+      <div class="productCard" data-category="serum">
+        <div class="productHeader">
+          <h3>Niacinamide Serum</h3>
+          <span class="price">₹549</span>
+        </div>
+        <p>Controls oil, reduces acne marks & pores.</p>
+        <div class="tagsRow">
+          <span class="tag">Acne</span>
+          <span class="tag">Serum</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Niacinamide Serum')">Add to Routine</button>
+      </div>
+
+      <div class="productCard" data-category="moisturizer">
+        <div class="productHeader">
+          <h3>Night Repair Cream</h3>
+          <span class="price">₹699</span>
+        </div>
+        <p>Repairs skin barrier while you sleep.</p>
+        <div class="tagsRow">
+          <span class="tag">Night</span>
+          <span class="tag">Moisturizer</span>
+        </div>
+        <button class="productBtn" onclick="addToRoutine('Night Repair Cream')">Add to Routine</button>
+      </div>
+
+    </div>
+
+    <div class="routineBox">
+      <h3>🧾 Your Routine List</h3>
+      <p class="subtitleSmall">Products you selected will appear here.</p>
+      <ul id="routineList"></ul>
+      <button class="btn mt" onclick="clearRoutine()">Clear Routine</button>
+    </div>
+  </section>
+
+  <footer class="footerSimple">
+    © 2026 Aurelia AI Skincare | Made with 💗
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
