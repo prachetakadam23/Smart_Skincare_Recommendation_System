@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Skin Analysis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Enter Your Skin Details</h2>
+
+  <form id="skinForm">
+    <select name="skinType" required>
+      <option value="">Select Skin Type</option>
+      <option>Oily</option>
+      <option>Dry</option>
+      <option>Combination</option>
+      <option>Normal</option>
+
+    </select>
+
+    <input type="text" name="concern" placeholder="Skin Concern (acne, dryness)" required>
+    <input type="text" name="allergy" placeholder="Allergies">
+    <input type="number" name="budget" placeholder="Budget">
+
+    <input type="file" name="image" required>
+
+    <button type="submit">Analyze</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>

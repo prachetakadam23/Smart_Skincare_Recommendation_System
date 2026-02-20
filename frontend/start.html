@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started - Aurelia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="logo">Aurelia</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="chat.html">Chat with Aurelia</a>
+    </nav>
+
+    <div class="navRight">
+      <a href="login.html" class="navLink">Sign In</a>
+      <a href="start.html" class="btn">Get Started</a>
+    </div>
+  </header>
+
+  <section class="page">
+    <h2 class="title">Build Your Skin Profile 🌸</h2>
+    <p class="subtitle">Answer a few questions and let Aurelia do the magic.</p>
+
+    <div class="progressWrap">
+      <div class="progressBar" id="progressBar"></div>
+    </div>
+
+    <form id="skinForm" class="form-card">
+
+      <!-- ========================= -->
+      <!-- STEP 1 -->
+      <!-- ========================= -->
+      <div class="step active">
+        <h3>Step 1: Skin Basics</h3>
+
+        <label>Skin Type</label>
+        <select name="skinType" required>
+          <option value="">Select Skin Type</option>
+          <option>Oily</option>
+          <option>Dry</option>
+          <option>Combination</option>
+          <option>Normal</option>
+          <option>Sensitive</option>
+        </select>
+
+        <label>Age Group</label>
+        <select name="ageGroup" required>
+          <option value="">Select Age</option>
+          <option>Under 18</option>
+          <option>18 - 25</option>
+          <option>26 - 35</option>
+          <option>36 - 45</option>
+          <option>46+</option>
+        </select>
+
+        <button type="button" class="nextBtn btnFull">Next ➜</button>
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- STEP 2 (UPDATED WITH AGING) -->
+      <!-- ========================= -->
+      <div class="step">
+        <h3>Step 2: Skin Concerns</h3>
+        <label>Select your concerns</label>
+
+        <div class="chips">
+
+          <label><input type="checkbox" name="concerns" value="Acne"> Acne</label>
+          <label><input type="checkbox" name="concerns" value="Dryness"> Dryness</label>
+          <label><input type="checkbox" name="concerns" value="Dark Spots"> Dark Spots</label>
+          <label><input type="checkbox" name="concerns" value="Pigmentation"> Pigmentation</label>
+          <label><input type="checkbox" name="concerns" value="Wrinkles"> Wrinkles</label>
+          <label><input type="checkbox" name="concerns" value="Pores"> Pores</label>
+          <label><input type="checkbox" name="concerns" value="Darkspots"> Darkspots</label>
+          <label><input type="checkbox" name="concerns" value="Blackheads"> Blackheads</label>
+
+        </div>
+
+        <div class="rowBtns">
+          <button type="button" class="prevBtn btnLight">⬅ Back</button>
+          <button type="button" class="nextBtn btn">Next ➜</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Preferences -->
+<div class="step">
+  <h3>Step 3: Preferences</h3>
+
+  <label>Allergies / Ingredients to avoid</label>
+  <input type="text" name="allergy" placeholder="Example: fragrance, parabens" />
+
+  <label>Budget Range</label>
+  <select name="budget" required>
+    <option value="">Select Budget</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+
+  <label>Primary Goal</label>
+  <select name="goal">
+    <option value="">Select Goal</option>
+    <option>Glow & Brightening</option>
+    <option>Acne Control</option>
+    <option>Hydration</option>
+    <option>Anti-Aging / Firmness</option>
+    <option>Even Skin Tone</option>
+  </select>
+
+  <label>Upload Skin Image</label>
+  <input type="file" id="imageInput" name="image">
+
+  <!-- Analyze Button (Type button so it won't submit form) -->
+  <button type="button" class="btnFull" onclick="analyzeSkin(event)">
+    🔍 Analyze Skin Image
+  </button>
+
+  <div id="result" class="resultBox"></div>
+
+  <div class="rowBtns">
+    <button type="button" class="prevBtn btnLight">⬅ Back</button>
+    <button type="submit" class="btn">Get Full Routine ➜</button>
+  </div>
+</div>
+
+
+</form>
+</section>
+
+      
+  <footer class="footerSimple">
+    © 2026 Aurelia AI Skincare | Made with 💗
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
