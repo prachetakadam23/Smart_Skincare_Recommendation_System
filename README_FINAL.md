@@ -114,13 +114,40 @@ bash QUICKSTART.sh
 
 ### Manual Setup
 
-**Terminal 1 - Backend:**
+**Terminal 1 - Backend (development):**
 ```bash
 cd backend
 pip install -r requirements.txt
 python app.py
 # Backend runs on http://localhost:5000
 ```
+
+**Terminal 2 - Frontend (development):**
+```bash
+cd frontend
+npm install
+npm run dev
+# Frontend runs on http://localhost:5173 and proxies API calls
+```
+
+---
+### 🛠️ Production / Integrated Mode
+Build the React frontend and let Flask serve the static files so only one server is required:
+
+```bash
+# build frontend artifacts
+cd frontend
+npm run build
+
+# start backend after build (it will serve the files from frontend/dist)
+cd ../backend
+python app.py
+# now open http://localhost:5000 in your browser – the SPA and API are on the same origin
+```
+
+The Flask application includes a catch-all route that returns `index.html` for
+any unknown path, enabling client‑side routing to work correctly. This makes
+deployment simple (e.g. on Heroku, Azure Web Apps, or any VPS).
 
 **Terminal 2 - Frontend:**
 ```bash

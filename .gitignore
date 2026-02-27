@@ -10,6 +10,9 @@ node_modules/
 Front-end/node_modules/
 frontend/node_modules/
 
+# Build output
+frontend/dist/
+
 # Python cache
 __pycache__/
 *.py[cod]
