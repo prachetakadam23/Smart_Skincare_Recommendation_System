@@ -1,0 +1,32 @@
+# Virtual environments
+venv/
+env/
+ENV/
+backend/.venv/
+.venv/
+
+# Node modules
+node_modules/
+Front-end/node_modules/
+frontend/node_modules/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Files to ignore
+*.crdownload
+Unconfirmed 691211.crdownload
+
+# OS files
+.DS_Store
+Thumbs.db
