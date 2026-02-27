@@ -1,0 +1,116 @@
+.guide-wrapper {
+  height: 100vh;
+  background: #f6fbfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Make slider area more compact */
+.guide-content {
+  text-align: center;
+  width: 90%;
+  max-width: 360px;
+}
+
+/* Make image square-like */
+.guide-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;   /* 🔥 Makes it square */
+  object-fit: cover;     /* Crops nicely */
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+
+
+/* Slider */
+.slider-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.slide {
+  min-width: 100%;
+  text-align: center;
+}
+
+/* Make slider area more compact */
+.guide-content {
+  text-align: center;
+  width: 90%;
+  max-width: 360px;
+}
+
+/* Make image square-like */
+.guide-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+   /* 🔥 Makes it square */
+  object-fit: cover;     /* Crops nicely */
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+
+
+.slide h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* Dots */
+.dots {
+  margin: 15px 0;
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  margin: 0 5px;
+  background: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.active {
+  background: #000000;
+}
+
+/* Next Button */
+.next-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background: #000000;
+  color: white;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  background: #000000;
+}
+
+.secure-text {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #777;
+}

@@ -1,0 +1,107 @@
+.userinfo-container {
+  min-height: 100vh;
+  width: 100%;
+  background: #F8F6F3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+.userinfo-content {
+  text-align: center;
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.userinfo-content h2 {
+  font-size: 34px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #D9BBE8;
+}
+
+.userinfo-content p {
+  margin-bottom: 40px;
+  opacity: 0.8;
+  color: #666;
+}
+
+/* Inputs */
+.userinfo-content input {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 25px;
+  border: 2px solid #FFB6D9;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  background: #F8F6F3;
+  color: #333;
+}
+
+.userinfo-content input:focus {
+  border-color: #D9BBE8;
+  box-shadow: 0 0 0 3px rgba(217,187,232,0.1);
+}
+
+/* Gender title */
+.gender-title {
+  text-align: left;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Gender buttons */
+.gender-options {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.gender-options button {
+  flex: 1;
+  padding: 14px;
+  border: 2px solid #FFB6D9;
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 500;
+}
+
+/* Hover effect */
+.gender-options button:hover {
+  background: #FFB6D9;
+  color: white;
+}
+
+/* Active selected */
+.gender-options button.active {
+  background: linear-gradient(135deg, #FFB6D9, #D9BBE8);
+  color: white;
+  border-color: transparent;
+}
+
+/* Continue button */
+.continue-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(90deg,#FFB6D9,#D9BBE8);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  font-weight: 700;
+}
+
+.continue-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(217,187,232,0.12); }
