@@ -1,0 +1,18 @@
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# virtualenvs
+backend/.venv
+
+# node
+frontend/node_modules
+frontend/dist
+
+# git
+.git
+
+# editor
+.vscode/
