@@ -2,10 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from ml_model import analyze_skin
+from nlp_model import get_chat_response
 import joblib
 from tensorflow.keras.models import load_model
-import os
 import pandas as pd
+from skincare_routine import get_complete_routine, enrich_routine_with_products, get_product_specific_routine
 
 app = Flask(__name__)
 CORS(app)
@@ -23,13 +24,16 @@ MODEL_PATH = os.path.join(BASE_DIR, "model", "skin_concerns_model.h5")
 
 print("🔎 Looking for model at:", MODEL_PATH)
 
-
-if os.path.exists(MODEL_PATH):
-    concerns_model = load_model(MODEL_PATH)
-    print("✅ Skin concern ML model loaded successfully")
-else:
+try:
+    if os.path.exists(MODEL_PATH):
+        concerns_model = load_model(MODEL_PATH)
+        print("✅ Skin concern ML model loaded successfully")
+    else:
+        concerns_model = None
+        print("⚠️  Model not found - running in demo mode with form-based concerns")
+except Exception as e:
     concerns_model = None
-    print("❌ Model NOT found at:", MODEL_PATH)
+    print(f"⚠️  Could not load model: {e} - running in demo mode")
 
 
 
@@ -49,7 +53,7 @@ def analyze():
         return jsonify({"error": "No image uploaded"}), 400
 
     image = request.files["image"]
-    if image.filename == "":
+    if not image.filename:
         return jsonify({"error": "Empty filename"}), 400
 
     file_path = os.path.join(UPLOAD_FOLDER, image.filename)
@@ -63,16 +67,44 @@ def analyze():
 # ===========================
 @app.route("/analyze-form", methods=["POST"])
 def analyze_form():
-    skinType = request.json.get("skinType")
-    ageGroup = request.json.get("ageGroup")
+    skinType = request.json.get("skinType", "Normal")
+    ageGroup = request.json.get("ageGroup", "")
     predicted_concerns = request.json.get("concerns", [])
-    products = recommend_products(predicted_concerns)
+    
+    # Normalize concerns to lowercase for matching
+    predicted_concerns = [c.lower().strip() for c in predicted_concerns]
+    
+    # Ensure concerns is not empty
+    if not predicted_concerns:
+        predicted_concerns = []
+    
+    # Get ALL products matching the selected concerns (not just top 3)
+    all_products = get_all_products_for_concerns(predicted_concerns) if predicted_concerns else []
+    
+    # Create product-specific routines for each product
+    product_routines = []
+    if all_products:
+        for product in all_products:
+            try:
+                routine = get_product_specific_routine(product, skinType)
+                product_routines.append(routine)
+            except Exception as e:
+                print(f"Error creating routine for {product.get('product', 'Unknown')}: {e}")
+                continue
+    
+    # Log for debugging
+    print(f"\n📊 ANALYZE-FORM RESPONSE:")
+    print(f"   Skin Type: {skinType}")
+    print(f"   Concerns: {predicted_concerns}")
+    print(f"   Products Found: {len(all_products)}")
+    print(f"   Routines Generated: {len(product_routines)}")
     
     return jsonify({
-    "skinType": skinType,
-    "ageGroup": ageGroup,
-    "concerns": predicted_concerns,
-    "recommended_products": products
+        "skinType": skinType,
+        "ageGroup": ageGroup,
+        "concerns": predicted_concerns,
+        "recommended_products": all_products,
+        "product_routines": product_routines
     })
     
 
@@ -82,28 +114,57 @@ def analyze_form():
 # ===========================
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_msg = request.json.get("message")
-    reply = f"For {user_msg}, I recommend cleanser, serum & sunscreen 💗"
+    user_msg = request.json.get("message", "")
+    
+    if not user_msg:
+        return jsonify({"error": "No message provided"}), 400
+    
+    # Use NLP model to generate response
+    reply = get_chat_response(user_msg)
+    
     return jsonify({"reply": reply})
 
 # ===========================
-# Load skincare product dataset
+# Load skincare product dataset (CSV)
 # ===========================
 
 DATASET_PATH = os.path.join(BASE_DIR, "datasets", "skincare_products.csv")
 
 print("🔎 Looking for dataset at:", DATASET_PATH)
 
+product_df = None
 if os.path.exists(DATASET_PATH):
     try:
-        product_df = pd.read_csv(DATASET_PATH, encoding="utf-8")
-        product_df["rating"] = product_df["rating"].fillna(product_df["rating"].mean())
-    except UnicodeDecodeError:
-        product_df = pd.read_csv(DATASET_PATH, encoding="latin1")
-
-    print("✅ Skincare product dataset loaded successfully")
+        # Try multiple encodings to handle different character sets
+        encodings = ['utf-8', 'latin1', 'iso-8859-1', 'cp1252']
+        product_df = None
+        
+        for encoding in encodings:
+            try:
+                product_df = pd.read_csv(DATASET_PATH, encoding=encoding)
+                break
+            except Exception:
+                continue
+        
+        if product_df is None:
+            raise Exception("Could not decode CSV with any supported encoding")
+        
+        # Clean column names
+        product_df.columns = product_df.columns.str.lower().str.strip()
+        # Rename columns to match expected names
+        column_mapping = {
+            'product_name': 'product',
+            'product_description': 'description',
+            'price_range (inr)': 'price',
+            'ingredients': 'ingredients'
+        }
+        product_df.rename(columns=column_mapping, inplace=True)
+        print(f"✅ Skincare product dataset loaded successfully ({len(product_df)} products)")
+        print(f"Columns: {list(product_df.columns)}")
+    except Exception as e:
+        print(f"❌ Error loading CSV dataset: {e}")
+        product_df = None
 else:
-    product_df = None
     print("❌ Skincare product dataset NOT found")
 
 
@@ -117,6 +178,44 @@ def recommend_products(concerns, top_n=3):
     df = product_df.copy()
     df["concern"] = df["concern"].str.lower()
 
+    # Filter products matching concerns
+    matched = df[df["concern"].isin(concerns)]
+
+    if matched.empty:
+        return []
+
+    # Select top products (first one per concern, max top_n)
+    results = []
+    seen_concerns = set()
+    
+    for _, row in matched.iterrows():
+        concern = row["concern"]
+        if concern not in seen_concerns and len(results) < top_n:
+            seen_concerns.add(concern)
+            results.append({
+                "product": row.get("product", ""),
+                "description": row.get("description", ""),
+                "ingredients": row.get("ingredients", ""),
+                "price": row.get("price", ""),
+                "concern": concern
+            })
+    
+    return results
+
+
+def get_all_products_for_concerns(concerns):
+    """
+    Get ALL products for the given concerns (not limited to top_n).
+    Returns all matching products organized by concern.
+    """
+    if product_df is None:
+        return []
+
+    # Normalize text
+    concerns = [c.lower().strip() for c in concerns]
+
+    df = product_df.copy()
+    df["concern"] = df["concern"].str.lower()
 
     # Filter products matching concerns
     matched = df[df["concern"].isin(concerns)]
@@ -124,22 +223,17 @@ def recommend_products(concerns, top_n=3):
     if matched.empty:
         return []
 
-    # Sort by rating (desc) then price (asc)
-    matched = matched.sort_values(
-        by=["rating", "price_range (INR)"],
-        ascending=[False, True]
-    )
-
+    # Return all matching products
     results = []
-    for _, row in matched.head(top_n).iterrows():
+    for _, row in matched.iterrows():
         results.append({
-            "product_name": row["product_name"],
-            "description": row["product_description"],
-            "ingredients": row["ingredients"],
-            "price": row["price_range (INR)"],
-            "rating": row["rating"]
+            "product": row.get("product", ""),
+            "description": row.get("description", ""),
+            "ingredients": row.get("ingredients", ""),
+            "price": row.get("price", ""),
+            "concern": row.get("concern", "")
         })
-
+    
     return results
 @app.route("/recommend", methods=["POST"])
 def recommend():
